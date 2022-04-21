@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue';
+
 
 defineProps ({
     publication: Object
@@ -7,12 +9,14 @@ defineProps ({
 </script>
 
 <template>
+
     <div class="item">
     {{ publication.title }}
-    <img :src="publication.url" />
-    <!-- ternääri jos publication.owner = null niin palauttaa publications.owner.username, jos null niin "anonyymi" -->
+    <img @error="error = true" :src="publication.url" />
+    <!-- ternari jos publication.owner = null niin palauttaa publications.owner.username, jos null niin "anonyymi" -->
     {{ publication.owner ? publication.owner.username : "anonyymi" }}
     </div>
+
 </template>
 
 <style scoped>

@@ -1,5 +1,7 @@
 <script setup>
 import { computed, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { publicationService } from '../../services/publicationService';
 
 const publicationData = reactive({
     title: '',
@@ -8,6 +10,8 @@ const publicationData = reactive({
     visibility: 2,  // Julkinen postaus
     tags: []
 })
+
+const router = useRouter()
 
 const isDataValid = computed(() => {
 
@@ -23,15 +27,19 @@ const isDataValid = computed(() => {
     }
 })
 
-const createNewPublication = () => {
+const createNewPublication = async () => {
 
     if(!isDataValid.value.isAllValid) return
 
-    publicationData.title = ''
-    publicationData.description = ''
-    publicationData.url = ''
-    console.log("created")
+    const {data, error} = await publicationService.usePost(publicationData)
 
+    if(data.value && !error.value){
+        publicationData.title = ''
+        publicationData.description = ''
+        publicationData.url = ''
+
+        router.push('/')
+    }
 }
 
 </script>
@@ -71,6 +79,5 @@ const createNewPublication = () => {
     flex-direction: column;
     height: 200px;
     width: 200px;
-    justify-content: center;
 }
 </style>
