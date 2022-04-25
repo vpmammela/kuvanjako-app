@@ -1,8 +1,11 @@
 <script setup>
+import { useRouter } from 'vue-router';
 import { publicationService } from '../../services/publicationService';
 import PublicationView from './PublicationView.vue';
 
 const { data, error, isFinished } = publicationService.useGetall()
+
+const router = useRouter()
 
 </script>
 
@@ -13,7 +16,7 @@ const { data, error, isFinished } = publicationService.useGetall()
     <div v-else-if="!isFinished">Ladataan...</div>
     <template v-else-if="data?.publications">
         <div class="container">
-            <div class="item" v-for="publication, key in data.publications">
+            <div class="item" @click="router.push('/publication/' + publication._id)"  v-for="publication in data.publications">
                 <PublicationView :publication="publication"></PublicationView>
             </div>
         </div>
