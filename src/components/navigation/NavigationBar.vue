@@ -1,5 +1,17 @@
 <script setup>
+import { provide, ref } from 'vue';
 import { RouterLink } from 'vue-router'
+import { authService } from '../../services/authService';
+import { isAuth } from '../../store';
+import LoginView from '../login/LoginView.vue';
+
+const showLoginView = ref(false)
+
+provide('showLogin', showLoginView)
+
+const logout = async () => {
+    await authService.useLogout()
+}
 
 </script>
 
@@ -9,8 +21,11 @@ import { RouterLink } from 'vue-router'
         <router-link to="/">Koti</router-link>
         <router-link to="/users">Käyttäjät</router-link>
         <router-link to="/create">Uusi Postaus</router-link>
+        <a href="#" v-if="isAuth" @click.prevent="logout">Ulos</a>
+        <a href="#" v-else @click.prevent="showLoginView = !showLoginView">Kirjaudu</a>
     </div>
 
+    <LoginView v-if="showLoginView && !isAuth"></LoginView>
 
 </template>
 
