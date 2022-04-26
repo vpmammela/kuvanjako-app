@@ -12,15 +12,16 @@ const router = useRouter()
 
 <template>
     <h1>PublicationViewAll OK!</h1>
-    <div v-if="error">Valitettavasti datan lataaminen ei onnistunut</div>
-    <div v-else-if="!isFinished">Ladataan...</div>
-    <template v-else-if="data?.publications">
-        <div class="container">
-            <div class="item" @click="router.push('/publication/' + publication._id)"  v-for="publication in data.publications">
-                <PublicationView :publication="publication"></PublicationView>
+        <div v-if="error">Valitettavasti datan lataaminen ei onnistunut</div>
+        <div v-else-if="!isFinished">Ladataan...</div>
+        <template v-else-if="data?.publications">
+            <div class="container">
+                <div class="item" @click="router.push('/publication/' + publication._id)"
+                    v-for="publication in data.publications">
+                    <PublicationView :publication="publication"></PublicationView>
+                </div>
             </div>
-        </div>
-    </template>
+        </template>
 </template>
 
 <style scoped>
