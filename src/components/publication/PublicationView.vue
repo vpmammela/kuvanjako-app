@@ -29,9 +29,8 @@ defineProps ({
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: gray;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    background-color: whitesmoke;
+    padding: 10px;
     margin-bottom: 20px;
     font-family: 'copperplate';
 }

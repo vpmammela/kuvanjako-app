@@ -3,6 +3,7 @@ import { computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { publicationService } from '../../services/publicationService';
 
+
 const publicationData = reactive({
     title: '',
     description: '',
@@ -29,11 +30,11 @@ const isDataValid = computed(() => {
 
 const createNewPublication = async () => {
 
-    if(!isDataValid.value.isAllValid) return
+    if (!isDataValid.value.isAllValid) return
 
-    const {data, error} = await publicationService.usePost(publicationData)
+    const { data, error } = await publicationService.usePost(publicationData)
 
-    if(data.value && !error.value){
+    if (data.value && !error.value) {
         publicationData.title = ''
         publicationData.description = ''
         publicationData.url = ''
@@ -42,13 +43,13 @@ const createNewPublication = async () => {
     }
 }
 
+
 </script>
 
 <template>
 
-    <div class="form-container">
-        <div class="publication-form">
-            
+
+
             <label>Otsikko</label>
             <small>{{ isDataValid.titleValidation }}</small>
             <input v-model="publicationData.title" type="text">
@@ -63,21 +64,6 @@ const createNewPublication = async () => {
 
             <button :disabled="!isDataValid.isAllValid" @click="createNewPublication">Lähetä</button>
 
-        </div>
 
-    </div>
 </template>
 
-<style scoped>
-
-.form-container {
-    display: flex;
-    justify-content: center;
-}
-.publication-form {
-    display: flex;
-    flex-direction: column;
-    height: 200px;
-    width: 200px;
-}
-</style>

@@ -1,17 +1,19 @@
 <script setup>
 import { RouterView } from 'vue-router';
-import NavigationBar from './components/navigation/NavigationBar.vue';
+import BaseLayout from './components/layout/BaseLayout.vue';
 
 
 
 </script>
 
 <template>
-    <NavigationBar></NavigationBar>
-    <router-view></router-view>
+    <BaseLayout>
+        <router-view></router-view>
+    </BaseLayout>
 </template>
 
 <style>
-
-
+* {
+    margin: 0px;
+}
 </style>

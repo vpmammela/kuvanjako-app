@@ -28,5 +28,8 @@ export const router = createRouter({
             component: PublicationViewDetails,
             props: true
         }
-    ]
+    ],
+    scrollBehavior(){
+        document.getElementById('app').scrollIntoView()
+    }
 })
