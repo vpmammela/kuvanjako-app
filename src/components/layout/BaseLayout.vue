@@ -25,7 +25,7 @@ import NavigationBar from '../navigation/NavigationBar.vue';
     align-items: center;
     justify-content: flex-start;
     min-height: 100vh;
-    padding-top: 60px;
+    padding-top: 120px;
     background-color: royalblue;
 }
 

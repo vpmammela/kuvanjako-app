@@ -2,6 +2,7 @@
 import { onClickOutside } from '@vueuse/core';
 import { inject, reactive, ref } from 'vue';
 import { authService } from '../../services/authService'
+import { RouterLink } from 'vue-router';
 
 const showLoginView = inject('showLogin')
 
@@ -36,6 +37,8 @@ onClickOutside(target, () => {
     <input v-model="credentials.password" type="password">
 
     <button type="submit">Kirjaudu</button>
+
+    <router-link to="/register" @click="showLoginView = false">Rekisteröi uusi käyttäjä</router-link>
 </form>
 
 </template>

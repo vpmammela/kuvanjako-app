@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import BaseLayout from './components/layout/BaseLayout.vue';
+import NotificatioContainer from './components/notification/NotificatioContainer.vue';
 
 
 
@@ -8,6 +9,7 @@ import BaseLayout from './components/layout/BaseLayout.vue';
 
 <template>
     <BaseLayout>
+        <NotificatioContainer></NotificatioContainer>
         <router-view></router-view>
     </BaseLayout>
 </template>
