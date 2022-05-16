@@ -3,6 +3,7 @@ import { RouterLink } from 'vue-router';
 import { publicationService } from '../../services/publicationService';
 import PublicationView from './PublicationView.vue';
 
+
 const { data, error, isFinished } = publicationService.useGetall()
 
 
@@ -19,7 +20,13 @@ const { data, error, isFinished } = publicationService.useGetall()
             <router-link :to="`/publication/${publication._id}`">
                 <PublicationView :publication="publication"></PublicationView>
             </router-link>
+           
         </template>
     </template>
 </template>
+<style scoped>
+a:link {
+    text-decoration: none;
+}
 
+</style>
