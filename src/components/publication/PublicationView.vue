@@ -1,5 +1,6 @@
 <script setup>
-import { reactive } from 'vue';
+
+
 import { publicationService } from '../../services/publicationService';
 import { isAuth } from '../../store';
 
@@ -10,7 +11,6 @@ defineProps({
 })
 
 
-
 </script>
 
 <template>
@@ -19,8 +19,11 @@ defineProps({
             {{ publication.title }}
 
             <img @error="error = true" :src="publication.url" />
-            <!-- ternari jos publication.owner = null niin palauttaa publications.owner.username, jos null niin "anonyymi" -->
-            {{ publication.owner ? publication.owner.username : "anonyymi" }}
+            
+            {{ publication.description }}
+            <div v-if="isAuth">
+                {{ publication.owner ? publication.owner.username : "anonyymi" }}
+            </div>
 
         </div>
     </div>
@@ -34,6 +37,7 @@ defineProps({
 .container {
     display: flex;
     justify-content: center;
+
 }
 
 .item {

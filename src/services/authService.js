@@ -32,12 +32,9 @@ export const authService = {
     async useRefreshToken(){ 
         
         globalState.accessToken = globalState.refreshToken
-        const {data, error} = await useApi('/login').patch().json()
+        const { data } = await useApi('/login').patch().json()
         globalState.accessToken = data.value.access_token
 
-        console.log(data)
-        console.log('accesstoken' + globalState.accessToken)
-        console.log(error)
         location.reload()
         
 }

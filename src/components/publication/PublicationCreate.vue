@@ -2,6 +2,7 @@
 import { computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { publicationService } from '../../services/publicationService';
+import { isAuth } from '../../store';
 
 
 const publicationData = reactive({
@@ -24,6 +25,7 @@ const isDataValid = computed(() => {
         urlValidation: urlValidation ? 'OK' : 'Vain https osoitteet ovat sallittu',
         descriptionValidation: descriptionValidation ? 'OK' : 'Kuvauksen teksti on liian pitkä',
         titleValidation: titleValidation ? 'OK' : 'Otsikon täytyy olla ainakin kolme merkkiä pitkä',
+        
         isAllValid: urlValidation && descriptionValidation && titleValidation
     }
 })
@@ -50,20 +52,38 @@ const createNewPublication = async () => {
 
 
 
-            <label>Otsikko</label>
-            <small>{{ isDataValid.titleValidation }}</small>
-            <input v-model="publicationData.title" type="text">
+    <label>Otsikko</label>
+    <small>{{ isDataValid.titleValidation }}</small>
+    <input v-model="publicationData.title" type="text">
 
-            <label>Kuvaus</label>
-            <small>{{ isDataValid.descriptionValidation }}</small>
-            <input v-model="publicationData.description" type="text">
+    <label>Kuvaus</label>
+    <small>{{ isDataValid.descriptionValidation }}</small>
+    <input v-model="publicationData.description" type="text">
 
-            <label>URL</label>
-            <small>{{ isDataValid.urlValidation }}</small>
-            <input v-model="publicationData.url" type="text">
+    <div v-if="isAuth" class="visibility-div">
+        <label>Näkyvyys</label>
+        <small>Valitse ketkä näkevät julkaisusi</small>
+        <select v-model="publicationData.visibility">
+            <option value=2>Julkinen</option>
+            <option value=1>Kirjautuneet</option>
+            <option value=0>Vain itse ja admin</option>
+        </select>
+    </div>
 
-            <button :disabled="!isDataValid.isAllValid" @click="createNewPublication">Lähetä</button>
+    <label>URL</label>
+    <small>{{ isDataValid.urlValidation }}</small>
+    <input v-model="publicationData.url" type="text">
+
+    <button :disabled="!isDataValid.isAllValid" @click="createNewPublication">Lähetä</button>
 
 
 </template>
 
+<style scoped>
+.visibility-div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 4px;
+}
+</style>

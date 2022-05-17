@@ -11,7 +11,6 @@ export const publicationService = {
         return useApi('/publications').post(payload).json()
     },
     usePatch(publicationId){
-        console.log("usePatch suoritettu")
         return useApi(`/publications/${publicationId}/like`).patch()
     }
 }
