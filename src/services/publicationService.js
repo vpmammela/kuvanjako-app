@@ -12,5 +12,6 @@ export const publicationService = {
     },
     usePatch(publicationId){
         return useApi(`/publications/${publicationId}/like`).patch()
-    }
+    },
+    
 }

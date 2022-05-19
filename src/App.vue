@@ -18,4 +18,5 @@ import NotificatioContainer from './components/notification/NotificatioContainer
 body {
     margin: 0px;
 }
+
 </style>

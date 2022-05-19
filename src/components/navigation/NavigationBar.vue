@@ -70,6 +70,9 @@ const logout = () => {
 .nav {
     display: flex;
     justify-content: center;
+    z-index: 40;
+
+
 }
 
 .nav-mobile {
@@ -84,6 +87,8 @@ const logout = () => {
 a {
     margin: 20px;
     font-size: 18px;
+    text-decoration: none;
+    color: black;
 }
 
 .icon {

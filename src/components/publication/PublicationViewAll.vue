@@ -1,6 +1,6 @@
 <script setup>
 
-import { RouterLink } from 'vue-router';
+
 import { publicationService } from '../../services/publicationService';
 import PublicationView from './PublicationView.vue';
 
@@ -14,18 +14,33 @@ const { data, error, isFinished } = publicationService.useGetall()
 
 <template>
 
-    <div v-if="error">Valitettavasti datan lataaminen ei onnistunut</div>
+    <!--    <div v-if="error">Valitettavasti datan lataaminen ei onnistunut</div>
     <div v-else-if="!isFinished">Ladataan...</div>
     <template v-else-if="data?.publications">
 
 
         <template v-for="publication in data.publications">
-            <router-link :to="`/publication/${publication._id}`">
+
                 <PublicationView :publication="publication"></PublicationView>
-            </router-link>
+
         </template>
 
+    </template> -->
+
+    <div v-if="error">Valitettavasti datan lataaminen ei onnistunut</div>
+    <div v-else-if="!isFinished">Ladataan...</div>
+    <template v-else-if="data?.publications">
+
+            <div class="container">
+        <template v-for="publication in data.publications">
+
+                <div class="item">
+                    <PublicationView :publication="publication"></PublicationView>
+            </div>
+        </template>
+                </div>
     </template>
+
 
 
 </template>
@@ -33,4 +48,25 @@ const { data, error, isFinished } = publicationService.useGetall()
 a:link {
     text-decoration: none;
 }
+
+
+.item {
+/*     filter: grayscale(100%); */
+    z-index: 0;
+    margin: 50px;
+    
+}
+
+.item:hover {
+    filter: none;
+    transition: all 0.35s;
+
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 </style>

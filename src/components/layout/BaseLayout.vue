@@ -26,14 +26,15 @@ import NavigationBar from '../navigation/NavigationBar.vue';
     justify-content: flex-start;
     min-height: 100vh;
     padding-top: 120px;
-    background-color: royalblue;
+
 }
 
 .nav {
     display: flex;
     position: fixed;
-    background-color: bisque;
+    background-color: whitesmoke;
     top: 0px;
     width: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 </style>
