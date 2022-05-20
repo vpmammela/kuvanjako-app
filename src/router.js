@@ -5,6 +5,7 @@ import PublicationCreate from './components/publication/PublicationCreate.vue'
 import PublicationViewDetails from './components/publication/PublicationViewDetails.vue'
 import RegistrationView from './components/registration/RegistrationView.vue'
 import { isAuth } from './store'
+import PublicationView from './components/publication/PublicationView.vue'
 
 export const router = createRouter({
     history: createWebHistory(),
@@ -34,6 +35,18 @@ export const router = createRouter({
             path: '/register',
             name: 'Rekisteröityminen',
             component: RegistrationView
+        },
+        {
+            path: '/publication/:publicationId/comments',
+            name: 'Uusi kommentti',
+            component: PublicationView,
+            props: true
+        },
+        {
+            path: '/publication/:publicationId/comments/:commentId',
+            name: 'Poista oma kommentti',
+            component: PublicationView,
+            props: true
         }
     ],
     scrollBehavior(){

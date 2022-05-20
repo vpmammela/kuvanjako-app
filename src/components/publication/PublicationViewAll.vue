@@ -14,19 +14,6 @@ const { data, error, isFinished } = publicationService.useGetall()
 
 <template>
 
-    <!--    <div v-if="error">Valitettavasti datan lataaminen ei onnistunut</div>
-    <div v-else-if="!isFinished">Ladataan...</div>
-    <template v-else-if="data?.publications">
-
-
-        <template v-for="publication in data.publications">
-
-                <PublicationView :publication="publication"></PublicationView>
-
-        </template>
-
-    </template> -->
-
     <div v-if="error">Valitettavasti datan lataaminen ei onnistunut</div>
     <div v-else-if="!isFinished">Ladataan...</div>
     <template v-else-if="data?.publications">

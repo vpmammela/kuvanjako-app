@@ -1,21 +1,30 @@
 <script setup>
 
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { publicationService } from '../../services/publicationService';
-import { isAuth } from '../../store';
+import { globalState, isAuth } from '../../store';
 import { ThumbUpOutline } from 'mdue'
-import { ref, toRefs, watch } from 'vue';
+import { reactive, ref, toRefs, watch } from 'vue';
 
 
+const router = useRouter()
 
-const props = defineProps({
-    publication: Object
-
+const commentData = reactive({
+    body: ''
 })
 
-let { publication } = toRefs(props)
+const props = defineProps({
+    publication: Object,
+    showDetails: Boolean
+})
+
+let { publication, showDetails } = toRefs(props)
+
 let likes = ref(publication.value.likes)
 let isLoading = ref(false)
+
+let comments = ref(publication.value.comments)
+let checkComments = ref(false)
 
 watch(isLoading, async () => {
     const res = await publicationService.useGetById(publication.value._id)
@@ -23,10 +32,36 @@ watch(isLoading, async () => {
     isLoading.value = false
 })
 
+watch(checkComments, async () => {
+    const res = await publicationService.useGetById(publication.value._id)
+    comments.value = res.data.value.publication.comments
+    checkComments.value = false
+})
+
+
+const deleteOwnPost = async () => {
+    await publicationService.useDeleteOwnPost(publication.value._id)
+
+    router.push('/')
+ 
+}
+
 async function toggleLike(id) {
     await publicationService.usePatch(id)
     isLoading.value = true
 }
+
+async function postComment(id) {
+    await publicationService.usePostComment(id, commentData)
+    commentData.body = ''
+    checkComments.value = true
+}
+
+async function deleteOwnComment(commentId){
+    await publicationService.useDeleteOwnComment(publication.value._id, commentId)
+    checkComments.value = true
+}
+const showDelete = ref(false)
 
 
 </script>
@@ -51,14 +86,69 @@ async function toggleLike(id) {
             </div>
         </div>
     </div>
+                    <div v-if="isAuth && showDetails && publication.owner._id === globalState.userId" class="modify-container">
+                    <button @click="showDelete = !showDelete">Muokkaa</button>
+                    <div v-if="showDelete">
+                        Tällä hetkellä ainoa muokkaus on postauksen poisto.
+                        <button @click="deleteOwnPost">Poista</button>
+                    </div>
+                    </div>
 
 
-<!--     <div class="description">
-        {{ publication.description }}
-    </div> -->
+    <div v-if="showDetails && isAuth">
+        <div class="description">
+            {{ publication.description }}
+        </div>
+        <template v-for="comments in comments">
+            <div class="comments">
+                <div v-if="comments.owner._id === globalState.userId" class="users-own-comments">
+
+                    {{ comments.owner.username }}:
+                    {{ comments.body }}
+                    <button @click="deleteOwnComment(comments._id)">poista</button>
+                </div>
+                <div v-else>
+                    {{ comments.owner.username }}:
+                    {{ comments.body}}
+                </div>
+            </div>
+        </template>
+        <div class="comment-container">
+            <input v-model="commentData.body" type="text" class=input-comment />
+            <button @click="postComment(publication._id)">Lähetä</button>
+        </div>
+
+    </div>
+
 </template>
 
 <style scoped>
+
+.users-own-comments {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.comments {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: solid 2px;
+    padding: 10px;
+}
+
+.comment-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px;
+}
+
+
+.description {
+    text-align: center;
+}
+
 .container {
     background: #fff;
     padding: 1rem;
@@ -110,9 +200,8 @@ img {
 .like-button {
     font-size: 20px;
 }
+
 .like-button:hover {
     cursor: pointer;
 }
-
-
 </style>

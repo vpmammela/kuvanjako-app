@@ -16,7 +16,7 @@ const {data, error, isFinished} = publicationService.useGetById(props.publicatio
     <div v-if="error" >Tapahtui virhe</div>
     <div v-else-if="!isFinished">Ladataan...</div>
     <div v-else-if="data">
-        <PublicationView :publication="data.publication"></PublicationView>
+        <PublicationView :publication="data.publication" :showDetails="true"></PublicationView>
         </div>
 
 </template>

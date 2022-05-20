@@ -7,6 +7,8 @@ import { isAuth } from '../../store';
 
 // base64 alkaa
 
+
+let isImageSelected = false
 const dataUrl = ref('')
 const img = ref(null)
 const fileNameAndSize = ref('')
@@ -89,6 +91,10 @@ watch(controls, drawImage)
 
 
 // base64 loppuu
+    watch(isImageSet, () => {
+        isImageSelected = true
+    })
+
 const publicationData = reactive({
     title: '',
     description: '',
@@ -112,27 +118,29 @@ const isDataValid = computed(() => {
     const urlValidation = publicationData.url.includes('https://')
     const descriptionValidation = publicationData.description.length < 1000
     const titleValidation = publicationData.title.length > 2
-    const imgValidation = isImageSet
+    const imgValidation = dataUrl.value.length < 200000
+
+
 
     return {
         urlValidation: urlValidation ? 'OK' : 'Vain https osoitteet ovat sallittu',
         descriptionValidation: descriptionValidation ? 'OK' : 'Kuvauksen teksti on liian pitkä',
         titleValidation: titleValidation ? 'OK' : 'Otsikon täytyy olla ainakin kolme merkkiä pitkä',
-        imgValidation: imgValidation ? 'OK' : 'Valitse tiedosto',
+        imgValidation: imgValidation ? 'OK' : 'Tiedoston koko täytyy olla alle 200kt',
     
         
-        isAllValid: descriptionValidation && titleValidation && urlValidation
+        isAllValid: descriptionValidation && titleValidation && urlValidation && imgValidation
     }
 })
 
 const createNewPublication = async () => {
     toTags()
-    /*     if (publicationData.description.includes('#')){
-            console.log('toimii')
-        } */
-    if (isImageSet) {
+    
+    if (isImageSelected) {
+
         publicationData.url = dataUrl
     }
+
     if (!isDataValid.value.isAllValid) return
 
     const { data, error } = await publicationService.usePost(publicationData)
@@ -146,11 +154,9 @@ const createNewPublication = async () => {
     }
 }
 
-
 </script>
 
 <template>
-
 
 
     <label>Otsikko</label>
@@ -174,16 +180,19 @@ const createNewPublication = async () => {
     <label>URL</label>
     <small>{{ isDataValid.urlValidation }}</small>
     <input v-model="publicationData.url" type="text">
+        <button :disabled="!isDataValid.isAllValid" @click="createNewPublication">Lähetä</button>
 
-    <div>
-    </div>
+
     <div class="image-editor">
         <div class="file-input">
-            <label>Valitse kuva {{ fileNameAndSize }}</label>
+            <label>Valitse kuva{{ fileNameAndSize }}</label>
+            <small>{{ isDataValid.imgValidation }}</small>
             <label v-if="isImageSet">Uusi koko kilotavuina: {{ (dataUrl.length / 1000).toFixed(2) }}</label>
             <input type="file" class="file" @change="handleFileInput" />
         </div>
-        <button :disabled="!isDataValid.isAllValid" @click="createNewPublication">Lähetä</button>
+
+
+
 
         <template v-if="isImageSet">
             <div class="canvas-container">
@@ -223,7 +232,7 @@ const createNewPublication = async () => {
 
                     <label>Hue: {{ controls.hueRotate }}</label>
                     <input type="range" min="0" max="360" step="1" v-model="controls.hueRotate" />
-                    <button @click="controls.show = !controls.show">Sulje</button>
+                    <button @click="controls.show = !controls.show" >Sulje</button>
                 </div>
             </div>
 
@@ -247,6 +256,7 @@ const createNewPublication = async () => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
 }
 
 .preview {
@@ -255,8 +265,8 @@ const createNewPublication = async () => {
 
 .image-editor {
     display: flex;
-    align-items: center;
     flex-direction: column;
+    justify-content: center;
 }
 
 canvas {
@@ -293,7 +303,4 @@ canvas {
     margin-left: auto;
 }
 
-button {
-    width: 100%;
-}
 </style>

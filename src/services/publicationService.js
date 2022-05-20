@@ -13,5 +13,14 @@ export const publicationService = {
     usePatch(publicationId){
         return useApi(`/publications/${publicationId}/like`).patch()
     },
+    usePostComment(publicationId, payload){
+        return useApi(`/publications/${publicationId}/comments`).post(payload).json()
+    },
+    useDeleteOwnComment(publicationId, commentId){
+        return useApi(`/publications/${publicationId}/comments/${commentId}`).delete()
+    },
+    useDeleteOwnPost(publicationId){
+        return useApi(`/publications/${publicationId}`).delete()
+    }
     
 }

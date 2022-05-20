@@ -1,11 +1,12 @@
 <script setup>
 import { onMounted, onUnmounted, provide, ref } from 'vue';
 import { RouterLink } from 'vue-router'
-/* import { setError } from '../../composables/notification'; */
 import { authService } from '../../services/authService';
 import { isAuth } from '../../store';
 import LoginView from '../login/LoginView.vue';
 import { Home, Account, Plus, Login, Logout } from 'mdue'
+
+
 
 const showLoginView = ref(false)
 
@@ -58,7 +59,7 @@ const logout = () => {
         <Logout class="icon"></Logout></a>
         <a href="#" v-else @click.prevent="showLoginView = !showLoginView">
         <Login class="icon"></Login></a>
-
+        
     </div>
 
     <LoginView v-if="showLoginView && !isAuth"></LoginView>
@@ -71,8 +72,6 @@ const logout = () => {
     display: flex;
     justify-content: center;
     z-index: 40;
-
-
 }
 
 .nav-mobile {
