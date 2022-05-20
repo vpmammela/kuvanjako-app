@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted, provide, ref } from 'vue';
 import { RouterLink } from 'vue-router'
 import { authService } from '../../services/authService';

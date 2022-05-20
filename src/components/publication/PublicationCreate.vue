@@ -1,5 +1,5 @@
 
-<script setup>
+<script setup lang="ts">
 import { computed, reactive, ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { publicationService } from '../../services/publicationService';
@@ -60,8 +60,9 @@ const drawImage = () => {
 const initControls = (width, height) => {
     controls.imgWidth = width
     controls.imgHeight = height
-    controls.maxHeight = parseInt(height * 2)
-    controls.maxWidth = parseInt(width * 2)
+    // tämä
+    controls.maxHeight = height * 2
+    controls.maxWidth = width * 2
 }
 const handleFileInput = (e) => {
     const [file] = e.target.files;
@@ -110,26 +111,28 @@ function toTags() {
         }
     })
 }
+function isImage(url) {
+  return /.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+}
 
 const router = useRouter()
 
 const isDataValid = computed(() => {
 
-    const urlValidation = publicationData.url.includes('https://')
+    const urlValidation = publicationData.url === "" || isImage(publicationData.url)
     const descriptionValidation = publicationData.description.length < 1000
     const titleValidation = publicationData.title.length > 2
-    const imgValidation = dataUrl.value.length < 200000
-
+    const imgValidation = isImage(publicationData.url) || (dataUrl.value.length !== 0 && dataUrl.value.length < 200000)
 
 
     return {
-        urlValidation: urlValidation ? 'OK' : 'Vain https osoitteet ovat sallittu',
+        urlValidation: urlValidation ? '' : 'Linkki ei ole kuva',
         descriptionValidation: descriptionValidation ? 'OK' : 'Kuvauksen teksti on liian pitkä',
         titleValidation: titleValidation ? 'OK' : 'Otsikon täytyy olla ainakin kolme merkkiä pitkä',
         imgValidation: imgValidation ? 'OK' : 'Tiedoston koko täytyy olla alle 200kt',
     
         
-        isAllValid: descriptionValidation && titleValidation && urlValidation && imgValidation
+        isAllValid: descriptionValidation && titleValidation && imgValidation && urlValidation
     }
 })
 
@@ -138,7 +141,7 @@ const createNewPublication = async () => {
     
     if (isImageSelected) {
 
-        publicationData.url = dataUrl
+        publicationData.url = dataUrl.value
     }
 
     if (!isDataValid.value.isAllValid) return

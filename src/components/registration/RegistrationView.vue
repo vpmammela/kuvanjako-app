@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, reactive, ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { registrationService } from '../../services/registrationService';
@@ -51,7 +51,7 @@ const isDataValid = computed(() => {
 const createNewUser = async () => {
 
     if(dataUrl) {
-        userData.profile_picture = dataUrl
+        userData.profile_picture = dataUrl.value
     }
 
     if (!isDataValid.value.isAllValid) return
@@ -119,8 +119,8 @@ const drawImage = () => {
 const initControls = (width, height) => {
     controls.imgWidth = width
     controls.imgHeight = height
-    controls.maxHeight = parseInt(height * 2)
-    controls.maxWidth = parseInt(width * 2)
+    controls.maxHeight = height * 2
+    controls.maxWidth = width * 2
 }
 const handleFileInput = (e) => {
     const [file] = e.target.files;

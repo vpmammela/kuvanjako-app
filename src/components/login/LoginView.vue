@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
 import { inject, reactive, ref } from 'vue';
 import { authService } from '../../services/authService'
 import { RouterLink } from 'vue-router';
 
-const showLoginView = inject('showLogin')
+let showLoginView: boolean= inject('showLogin')
 
 const credentials = reactive({
     username: '',
@@ -22,7 +22,7 @@ const login = async () => {
 const target = ref(null)
 
 onClickOutside(target, () => {
-    showLoginView.value = false
+    showLoginView = false
 })
 
 </script>

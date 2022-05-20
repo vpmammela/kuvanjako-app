@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { publicationService } from '../../services/publicationService';
 import PublicationView from './PublicationView.vue';
 

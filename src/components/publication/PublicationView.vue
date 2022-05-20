@@ -1,10 +1,11 @@
-<script setup>
+<script setup lang="ts">
 
 import { RouterLink, useRouter } from 'vue-router';
 import { publicationService } from '../../services/publicationService';
 import { globalState, isAuth } from '../../store';
 import { ThumbUpOutline } from 'mdue'
 import { reactive, ref, toRefs, watch } from 'vue';
+
 
 
 const router = useRouter()
@@ -43,7 +44,7 @@ const deleteOwnPost = async () => {
     await publicationService.useDeleteOwnPost(publication.value._id)
 
     router.push('/')
- 
+
 }
 
 async function toggleLike(id) {
@@ -57,7 +58,7 @@ async function postComment(id) {
     checkComments.value = true
 }
 
-async function deleteOwnComment(commentId){
+async function deleteOwnComment(commentId) {
     await publicationService.useDeleteOwnComment(publication.value._id, commentId)
     checkComments.value = true
 }
@@ -70,7 +71,7 @@ const showDelete = ref(false)
     <div class="container">
         <div class="router-container">
             <router-link :to="`/publication/${publication._id}`">
-                <img @error="error = true" :src="publication.url" />
+                <img :src="publication.url" />
             </router-link>
             <div class="caption">
                 {{ publication.title }}
@@ -86,30 +87,35 @@ const showDelete = ref(false)
             </div>
         </div>
     </div>
-                    <div v-if="isAuth && showDetails && publication.owner._id === globalState.userId" class="modify-container">
-                    <button @click="showDelete = !showDelete">Muokkaa</button>
-                    <div v-if="showDelete">
-                        Tällä hetkellä ainoa muokkaus on postauksen poisto.
-                        <button @click="deleteOwnPost">Poista</button>
-                    </div>
-                    </div>
+
+        <div v-if="publication.owner !== null">
+            <div v-if="isAuth && showDetails && globalState.userId == publication.owner._id" class="modify-container">
+            <button @click="showDelete = !showDelete">Muokkaa</button>
+            <div v-if="showDelete">
+                Tällä hetkellä ainoa muokkaus on postauksen poisto.
+                <button @click="deleteOwnPost">Poista</button>
+            </div>
+        </div>
+  
+        </div>
+
 
 
     <div v-if="showDetails && isAuth">
         <div class="description">
             {{ publication.description }}
         </div>
-        <template v-for="comments in comments">
+        <template v-for="comment in comments">
             <div class="comments">
-                <div v-if="comments.owner._id === globalState.userId" class="users-own-comments">
+                <div v-if="comment.owner._id === globalState.userId" class="users-own-comments">
 
-                    {{ comments.owner.username }}:
-                    {{ comments.body }}
-                    <button @click="deleteOwnComment(comments._id)">poista</button>
+                    {{ comment.owner.username }}:
+                    {{ comment.body }}
+                    <button @click="deleteOwnComment(comment._id)">poista</button>
                 </div>
                 <div v-else>
-                    {{ comments.owner.username }}:
-                    {{ comments.body}}
+                    {{ comment.owner.username }}:
+                    {{ comment.body }}
                 </div>
             </div>
         </template>
@@ -123,12 +129,12 @@ const showDelete = ref(false)
 </template>
 
 <style scoped>
-
 .users-own-comments {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .comments {
     display: flex;
     flex-direction: column;
