@@ -14,7 +14,8 @@
     "v3-infinite-loading": "^1.0.6",
     "vue": "^3.2.25",
     "vue-base64-file-upload": "^1.0.4",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.0.14",
+    "vue-use-infinite-scroll": "^0.0.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.2.0",

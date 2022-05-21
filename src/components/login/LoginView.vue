@@ -4,7 +4,7 @@ import { inject, reactive, ref } from 'vue';
 import { authService } from '../../services/authService'
 import { RouterLink } from 'vue-router';
 
-let showLoginView: boolean= inject('showLogin')
+let showLoginView: any= inject('showLogin')
 
 const credentials = reactive({
     username: '',
@@ -36,9 +36,11 @@ onClickOutside(target, () => {
     <label>Salasana</label>
     <input v-model="credentials.password" type="password">
 
-    <button type="submit">Kirjaudu</button>
+    <button type="submit">Kirjaudu sisään</button>
 
-    <router-link to="/register" @click="showLoginView = false">Rekisteröi uusi käyttäjä</router-link>
+    <router-link to="/register" @click="showLoginView = false">Uusi käyttäjä?
+    <button>Rekisteröidy</button>
+    </router-link>
 </form>
 
 </template>
@@ -57,6 +59,8 @@ onClickOutside(target, () => {
     background-color: bisque;
     padding: 20px;
     transform: translate(-50%, -50%);
+    border-radius: 10px;
+    
 }
 
 input, label, button {

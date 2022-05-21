@@ -24,6 +24,7 @@ const { data, error, isFinished } = publicationService.useGetall()
                 <div class="item">
                     <PublicationView :publication="publication"></PublicationView>
             </div>
+            <div ref="intersectionTrigger"></div>
         </template>
                 </div>
     </template>
